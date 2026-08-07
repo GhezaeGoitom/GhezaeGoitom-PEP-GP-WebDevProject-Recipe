@@ -8,12 +8,17 @@ const BASE_URL = "http://localhost:8081"; // backend URL
  * TODO: Get references to various DOM elements
  * - usernameInput, emailInput, passwordInput, repeatPasswordInput, registerButton
  */
+let usernameInput = document.getElementById("username-input");
+let emailInput = document.getElementById("email-input");
+let passwordInput = document.getElementById("password-input");
+let repeatPasswordInput = document.getElementById("repeat-password-input");
+let registerButton = document.getElementById("register-button");
 
 
 /* 
  * TODO: Ensure the register button calls processRegistration when clicked
  */
-
+registerButton.addEventListener("click", processRegistration);
 
 /**
  * TODO: Process Registration Function
@@ -40,6 +45,27 @@ const BASE_URL = "http://localhost:8081"; // backend URL
  */
 async function processRegistration() {
     // Implement registration logic here
+try{
+    let username = usernameInput.value;
+    let email = emailInput.value;
+    let password = passwordInput.value;
+    let repeatPassword = repeatPasswordInput.value;
+
+    if(!username || !email || !password || !repeatPassword){
+        alert("please fill all the values");
+        return;
+    }
+
+    if (password !== repeatPassword) {
+        alert("Confirm Password do not match");
+        return;
+    }
+
+    const registerBody = {
+        username: this.username,
+        email: this.email,
+        password: this.password
+    }
 
     // Example placeholder:
     // const registerBody = { username, email, password };
@@ -58,4 +84,21 @@ const requestOptions = {
         body: JSON.stringify(registerBody)
     };
     // await fetch(...)
+
+    let response = await fetch(`${BASE_URL}/register`, registerBody);
+
+    if(response.status === 201){
+        window.location.href = "../login/login-page.html";
+    }else if(response.status === 409){
+        alert("User already exist");
+    }{
+        alert("Registration failed");
+    }
+}catch(error){
+    console.error(error);
+    alert("There is an error");
+}
+    
+
+
 }
