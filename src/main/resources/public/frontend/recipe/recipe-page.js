@@ -16,15 +16,35 @@ window.addEventListener("DOMContentLoaded", () => {
      * - Admin link and logout button
      * - Search input
     */
+let adminLink = document.getElementById("admin-link");
+let logoutButton = document.getElementById("logout-button");
+let searchInput = document.getElementById("search-input");
+let searchButton = document.getElementById("search-button");
+let recipeList = document.getElementById("recipe-list");
+let addRecipeNameInput = document.getElementById("add-recipe-name-input");
+let addRecipeInstructionsInput = document.getElementById("add-recipe-instructions-input");
+let addRecipeSubmitButton = document.getElementById("add-recipe-submit-input");
+let updateRecipeNameInput = document.getElementById("update-recipe-name-input");
+let updateRecipeInstructionsInput = document.getElementById("update-recipe-instructions-input");
+let updateRecipeSubmitButton = document.getElementById("update-recipe-submit-input");
+let deleteRecipeNameInput = document.getElementById("delete-recipe-name-input");
+let deleteRecipeSubmitButton = document.getElementById("delete-recipe-submit-input");
 
+addRecipeSubmitButton.addEventListener("click", addRecipe);
+updateRecipeSubmitButton.addEventListener("click", updateRecipe);
+deleteRecipeSubmitButton.addEventListener("click", deleteRecipe);
+logoutButton.addEventListener("click", logout);
+searchButton.addEventListener("click", searchRecipes);
     /*
      * TODO: Show logout button if auth-token exists in sessionStorage
      */
-
+if(sessionStorage.getItem("auth-token") !== null){
+logoutButton.style.display = "block";
+}
     /*
      * TODO: Show admin link if is-admin flag in sessionStorage is "true"
      */
-
+if(sessionStorage.getItem("is-flag"))
     /*
      * TODO: Attach event handlers
      * - Add recipe button → addRecipe()

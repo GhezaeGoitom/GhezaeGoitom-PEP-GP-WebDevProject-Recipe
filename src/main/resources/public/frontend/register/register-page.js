@@ -85,7 +85,7 @@ const requestOptions = {
     };
     // await fetch(...)
 
-    let response = await fetch(`${BASE_URL}/register`, registerBody);
+    let response = await fetch(`${BASE_URL}/register`, registerBody, requestOptions);
 
     if(response.status === 201){
         window.location.href = "../login/login-page.html";
