@@ -33,7 +33,7 @@ let deleteRecipeSubmitButton = document.getElementById("delete-recipe-submit-inp
 addRecipeSubmitButton.addEventListener("click", addRecipe);
 updateRecipeSubmitButton.addEventListener("click", updateRecipe);
 deleteRecipeSubmitButton.addEventListener("click", deleteRecipe);
-logoutButton.addEventListener("click", logout);
+logoutButton.addEventListener("click", processLogout);
 searchButton.addEventListener("click", searchRecipes);
     /*
      * TODO: Show logout button if auth-token exists in sessionStorage
@@ -44,7 +44,9 @@ logoutButton.style.display = "block";
     /*
      * TODO: Show admin link if is-admin flag in sessionStorage is "true"
      */
-if(sessionStorage.getItem("is-flag"))
+if(sessionStorage.getItem("is-flag")){
+    adminLink.style.display = "block";
+}
     /*
      * TODO: Attach event handlers
      * - Add recipe button → addRecipe()
@@ -68,6 +70,25 @@ if(sessionStorage.getItem("is-flag"))
      */
     async function searchRecipes() {
         // Implement search logic here
+        let input = searchInput.value;
+        const requestOptions = {
+            method: getRecipes,
+            headers: {
+                "Authorization": "Bearer " + sessionStorage.getItem("auth-token")
+              }
+        };
+        try{
+        let response = await fetch(`${BASE_URL}/recipes${encodeURIComponent(input)}`, requestOptions);
+        if(response.status === 200){
+            recipeList = await response.json();
+        }else{
+            alert("error in recipe search");
+        }
+        }catch(error){
+            console.error(error);
+            alert("There is an error searching recipe");
+        }
+        
     }
 
     /**
@@ -80,6 +101,25 @@ if(sessionStorage.getItem("is-flag"))
      */
     async function addRecipe() {
         // Implement add logic here
+        let add = addRecipeNameInput.value.trim();
+        let add2 = addRecipeInstructionsInput.value.trim();
+        
+        const requestBody = {
+
+        }
+
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                "Authorization": "Bearer " + sessionStorage.getItem("auth-token")
+            }
+        }
+
+        try {
+            
+        } catch (error) {
+            
+        }
     }
 
     /**
