@@ -307,7 +307,7 @@ getRecipes();
         recipeList.innerHTML = "";
         for(let r of recipes){
             let ele = document.createElement("li");
-            ele.textContent = `${r.name} : Instrictions: ${r.instructions}`;
+            ele.textContent = `${r.name} : Instructions: ${r.instructions}`;
             recipeList.append(ele);
         }
     }
@@ -341,8 +341,8 @@ getRecipes();
         try {
             let response = await fetch(`${BASE_URL}/logout`,requestOptions);
             if(response.status === 200){
-                sessionStorage.setItem("auth-token", null);
-                sessionStorage.setItem("is-admin", null);
+                sessionStorage.removeItem("auth-token", null);
+                sessionStorage.removeItem("is-admin", null);
                 window.location.href = "../login/login-page.html";
             } 
             
