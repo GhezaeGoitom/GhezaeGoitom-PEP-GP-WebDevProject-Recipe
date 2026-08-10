@@ -44,9 +44,10 @@ logoutButton.style.display = "block";
     /*
      * TODO: Show admin link if is-admin flag in sessionStorage is "true"
      */
-if(sessionStorage.getItem("is-flag")){
+if(sessionStorage.getItem("is-admin") === "true"){
     adminLink.style.display = "block";
 }
+
     /*
      * TODO: Attach event handlers
      * - Add recipe button → addRecipe()
@@ -59,7 +60,7 @@ if(sessionStorage.getItem("is-flag")){
     /*
      * TODO: On page load, call getRecipes() to populate the list
      */
-
+getRecipes();
 
     /**
      * TODO: Search Recipes Function
@@ -71,8 +72,9 @@ if(sessionStorage.getItem("is-flag")){
     async function searchRecipes() {
         // Implement search logic here
         let input = searchInput.value;
+        
         const requestOptions = {
-            method: getRecipes,
+            method: "GET",
             headers: {
                 "Authorization": "Bearer " + sessionStorage.getItem("auth-token")
               }
@@ -80,7 +82,8 @@ if(sessionStorage.getItem("is-flag")){
         try{
         let response = await fetch(`${BASE_URL}/recipes${encodeURIComponent(input)}`, requestOptions);
         if(response.status === 200){
-            recipeList = await response.json();
+            recipes = await response.json();
+            refreshRecipeList();
         }else{
             alert("error in recipe search");
         }
@@ -104,21 +107,43 @@ if(sessionStorage.getItem("is-flag")){
         let add = addRecipeNameInput.value.trim();
         let add2 = addRecipeInstructionsInput.value.trim();
         
-        const requestBody = {
-
+        if(!add || !add2){
+            alert("name or recipe is empty!");
+            return;
         }
+
+        const requestBody = {
+            name: add,
+            instructions: add2
+        };
 
         const requestOptions = {
             method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
             headers: {
-                "Authorization": "Bearer " + sessionStorage.getItem("auth-token")
-            }
-        }
+                "Authorization": "Bearer " + sessionStorage.getItem("auth-token"),
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "*"
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer",
+            body: JSON.stringify(requestBody)
+        };
 
         try {
+            let response = await fetch(`${BASE_URL}/recipes`,requestOptions);
+            if(response.status === 200){
+                addRecipeNameInput.value = "";
+                addRecipeInstructionsInput.value = "";
+                refreshRecipeList();    
+            } 
             
         } catch (error) {
-            
+            console.error(error);
+            alert("error adding recipe!");
         }
     }
 
@@ -132,6 +157,60 @@ if(sessionStorage.getItem("is-flag")){
      */
     async function updateRecipe() {
         // Implement update logic here
+        let updateName = updateRecipeNameInput.value;
+        let updateInstr = updateRecipeInstructionsInput.value;
+
+        if(!updateName || !updateInstr){
+            alert("update name or instructions are empty");
+            return;
+        }
+
+        try {
+            let recipe = recipes.find(recipe => recipe.name === updateName);
+            if (!recipe) {
+                alert("Recipe not found.");
+                return;
+            }
+            let recipeId = recipe.id;
+
+            const requestBody = {
+                id: recipe.id,
+                name: updateName,
+                instructions: updateInstr,
+                author: recipe.author,
+                ingredients: recipe.ingredients
+            }
+
+            const requestOptions = {
+                method: "PUT",
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin",
+                headers: {
+                    "Authorization": "Bearer " + sessionStorage.getItem("auth-token"),
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*"
+                },
+                redirect: "follow",
+                referrerPolicy: "no-referrer",
+                body: JSON.stringify(requestBody)
+            };
+
+
+            let response = await fetch(`${BASE_URL}/recipes/${recipeId}`, requestOptions);
+            if(response.status === 200){
+                updateRecipeNameInput.value = "";
+                updateRecipeInstructionsInput.value = "";
+                getRecipes();
+                refreshRecipeList();
+            }
+
+            
+        } catch (error) {
+            console.error(error);
+            alert("there is an error updating recipe");
+        }
     }
 
     /**
@@ -143,6 +222,49 @@ if(sessionStorage.getItem("is-flag")){
      */
     async function deleteRecipe() {
         // Implement delete logic here
+        let deleteName = deleteRecipeNameInput.value;
+
+        if(!deleteName){
+            alert("delete name is empty");
+            return;
+        }
+
+        try {
+            let recipe = recipes.find(recipe => recipe.name === deleteName);
+            if (!recipe) {
+                alert("Recipe not found.");
+                return;
+            }
+            let recipeId = recipe.id;
+
+            const requestOptions = {
+                method: "DELETE",
+                mode: "cors",
+                cache: "no-cache",
+                credentials: "same-origin",
+                headers: {
+                    "Authorization": "Bearer " + sessionStorage.getItem("auth-token"),
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*"
+                },
+                redirect: "follow",
+                referrerPolicy: "no-referrer",
+            };
+
+
+            let response = await fetch(`${BASE_URL}/recipes/${recipeId}`, requestOptions);
+            if(response.status === 200){
+                deleteRecipeNameInput.value = "";
+                getRecipes();
+                refreshRecipeList();
+            }
+
+            
+        } catch (error) {
+            console.error(error);
+            alert("there is an error deleting recipe");
+        }
     }
 
     /**
@@ -153,6 +275,25 @@ if(sessionStorage.getItem("is-flag")){
      */
     async function getRecipes() {
         // Implement get logic here
+        const requestOptions = {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + sessionStorage.getItem("auth-token")
+              }
+        };
+        try{
+        let response = await fetch(`${BASE_URL}/recipes`, requestOptions);
+        if(response.status === 200){
+            recipes = await response.json();
+            refreshRecipeList();
+        }else{
+            alert("error in recipe search");
+        }
+        }catch(error){
+            console.error(error);
+            alert("There is an error searching recipe");
+        }
+        
     }
 
     /**
@@ -163,6 +304,12 @@ if(sessionStorage.getItem("is-flag")){
      */
     function refreshRecipeList() {
         // Implement refresh logic here
+        recipeList.innerHTML = "";
+        for(let r of recipes){
+            let ele = document.createElement("li");
+            ele.textContent = `${r.name} : Instrictions: ${r.instructions}`;
+            recipeList.append(ele);
+        }
     }
 
     /**
@@ -174,6 +321,35 @@ if(sessionStorage.getItem("is-flag")){
      */
     async function processLogout() {
         // Implement logout logic here
+
+
+        const requestOptions = {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Authorization": "Bearer " + sessionStorage.getItem("auth-token"),
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "*"
+            },
+            redirect: "follow",
+            referrerPolicy: "no-referrer",
+        };
+
+        try {
+            let response = await fetch(`${BASE_URL}/logout`,requestOptions);
+            if(response.status === 200){
+                sessionStorage.setItem("auth-token", null);
+                sessionStorage.setItem("is-admin", null);
+                window.location.href = "../login/login-page.html";
+            } 
+            
+        } catch (error) {
+            console.error(error);
+            alert("error in logout!");
+        }
     }
 
 });

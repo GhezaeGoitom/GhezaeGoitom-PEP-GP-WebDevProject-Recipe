@@ -74,7 +74,7 @@ const requestBody = {
 
     try {
         // TODO: Send POST request to http://localhost:8081/login using fetch with requestOptions
-let response = await fetch(`${BASE_URL}/login`, requestBody, requestOptions);
+let response = await fetch(`${BASE_URL}/login`,requestOptions);
         // TODO: If response status is 200
         // - Read the response as text
         // - Response will be a space-separated string: "token123 true"
