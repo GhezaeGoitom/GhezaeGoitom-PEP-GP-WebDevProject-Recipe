@@ -86,7 +86,7 @@ let response = await fetch(`${BASE_URL}/login`,requestOptions);
         // - Split the string into token and isAdmin flag
         // - Store both in sessionStorage using sessionStorage.setItem()
 
-        if(response.ok){
+        if(response.status === 200){
             let responseText = await response.text();
             sessionStorage.setItem("auth-token", responseText[0]);
             sessionStorage.setItem("is-admin", responseText[1]);

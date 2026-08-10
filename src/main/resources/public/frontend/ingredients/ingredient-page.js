@@ -73,7 +73,7 @@ async function addIngredient() {
     try{
     let response = await fetch(`${BASE_URL}/ingredients`, requestOptions);
     
-    if(response.status === 200 || response.status === 201){
+    if(response.ok){
         addIngredientNameInput.value = "";
         await getIngredients();
     }else{
@@ -109,7 +109,7 @@ async function getIngredients() {
 
 try {
     let response = await fetch(`${BASE_URL}/ingredients`, requestOptions);
-    if(response.status === 200 || response.status === 201){
+    if(response.ok){
         ingredients = await response.json();
         refreshIngredientList();
     }else{
@@ -167,7 +167,7 @@ const requestOptions = {
 try {
     let response = await fetch(`${BASE_URL}/ingredients/${id}`, requestOptions);
 
-    if(response.status === 200 || response.status === 201){
+    if(response.ok){
         deleteIngredientNameInput.value = "";
         await getIngredients();
     }else{
