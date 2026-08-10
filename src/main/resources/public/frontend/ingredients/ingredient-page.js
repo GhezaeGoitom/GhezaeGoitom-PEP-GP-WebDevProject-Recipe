@@ -113,8 +113,7 @@ try {
         ingredients = await response.json();
         refreshIngredientList();
     }else{
-        alert("error in fetching ingredients");  
-         
+        alert("error in fetching ingredients");          
     }
     
 } catch (error) {
