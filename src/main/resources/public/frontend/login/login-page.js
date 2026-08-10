@@ -11,7 +11,7 @@ const BASE_URL = "http://localhost:8081"; // backend URL
  * - login button
  * - logout button (optional, for token testing)
  */
-let usernameInput = document.getElementById("login_input");
+let usernameInput = document.getElementById("login-input");
 let passwordInput = document.getElementById("password-input");
 let loginBtn = document.getElementById("login-button");
 let logoutBtn = document.getElementById("logout-button");
@@ -93,7 +93,7 @@ let response = await fetch(`${BASE_URL}/login`,requestOptions);
         
 
         // TODO: Optionally show the logout button if applicable
-logoutBtn.style.display = "block";
+    logoutBtn.style.display = "block";
         // TODO: Add a small delay (e.g., 500ms) using setTimeout before redirecting
         // - Use window.location.href to redirect to the recipe page
         setTimeout(() => {
@@ -102,7 +102,7 @@ logoutBtn.style.display = "block";
     }else if(response.status === 401){
         alert("Incorrect login!");
     }else{
-        alert("Unknown login issue!");
+        alert("Unknown issue!");
     }
         // TODO: If response status is 401
         // - Alert the user with "Incorrect login!"    
