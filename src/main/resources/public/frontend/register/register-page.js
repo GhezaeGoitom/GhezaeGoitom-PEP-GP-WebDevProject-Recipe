@@ -46,10 +46,10 @@ registerButton.addEventListener("click", processRegistration);
 async function processRegistration() {
     // Implement registration logic here
 try{
-    let username = usernameInput.value;
-    let email = emailInput.value;
-    let password = passwordInput.value;
-    let repeatPassword = repeatPasswordInput.value;
+    let username = usernameInput.value.trim();
+    let email = emailInput.value.trim();
+    let password = passwordInput.value.trim();
+    let repeatPassword = repeatPasswordInput.value.trim();
 
     if(!username || !email || !password || !repeatPassword){
         alert("please fill all the values");
@@ -62,9 +62,9 @@ try{
     }
 
     const registerBody = {
-        username: this.username,
-        email: this.email,
-        password: this.password
+        username: username,
+        email: email,
+        password: password
     }
 
     // Example placeholder:
@@ -91,7 +91,7 @@ const requestOptions = {
         window.location.href = "../login/login-page.html";
     }else if(response.status === 409){
         alert("User already exist");
-    }{
+    }else {
         alert("Registration failed");
     }
 }catch(error){

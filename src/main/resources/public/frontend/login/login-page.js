@@ -47,12 +47,17 @@ async function processLogin() {
     // TODO: Retrieve username and password from input fields
     // - Trim input and validate that neither is empty
 
-let username = usernameInput.value.stringify.trim();
-let password = passwordInput.value.stringify.trim();
+let username = usernameInput.value.trim();
+let password = passwordInput.value.trim();
+
+if (!username || !password) {
+    alert("Username or password is empty!");
+    return;
+}
 
 const requestBody = {
-    username: this.username,
-    password: this.password
+    username: username,
+    password: password
 };
 
     // TODO: Create a requestBody object with username and password
@@ -82,7 +87,7 @@ let response = await fetch(`${BASE_URL}/login`,requestOptions);
         // - Store both in sessionStorage using sessionStorage.setItem()
 
         if(response.status === 200){
-            let responseText = JSON.stringify(response.body).split(" ");
+            let responseText = await response.text();
             sessionStorage.setItem("auth-token", responseText[0]);
             sessionStorage.setItem("is-admin", responseText[1]);
         
@@ -94,10 +99,10 @@ logoutBtn.style.display = "block";
         setTimeout(() => {
             window.location.href = "../recipe/recipe-page.html";
         }, 500);
-    }else if(response.status === 402){
+    }else if(response.status === 401){
         alert("Incorrect login!");
     }else{
-        alert("unknown issue!");
+        alert("Unknown login issue!");
     }
         // TODO: If response status is 401
         // - Alert the user with "Incorrect login!"    
@@ -108,7 +113,7 @@ logoutBtn.style.display = "block";
         // TODO: Handle any network or unexpected errors
         // - Log the error and alert the user
         console.error(error);
-        alert("there is an error");
+        alert("There is an error in login");
     }
 }
 
