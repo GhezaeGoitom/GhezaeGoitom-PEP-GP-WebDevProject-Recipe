@@ -81,7 +81,7 @@ getRecipes();
         };
         try{
         let response = await fetch(`${BASE_URL}/recipes${encodeURIComponent(input)}`, requestOptions);
-        if(response.status === 200){
+        if(response.ok){
             recipes = await response.json();
             refreshRecipeList();
         }else{
@@ -135,7 +135,7 @@ getRecipes();
 
         try {
             let response = await fetch(`${BASE_URL}/recipes`,requestOptions);
-            if(response.status === 200){
+            if(response.ok){
                 addRecipeNameInput.value = "";
                 addRecipeInstructionsInput.value = "";
                 refreshRecipeList();    
@@ -199,7 +199,7 @@ getRecipes();
 
 
             let response = await fetch(`${BASE_URL}/recipes/${recipeId}`, requestOptions);
-            if(response.status === 200){
+            if(response.ok){
                 updateRecipeNameInput.value = "";
                 updateRecipeInstructionsInput.value = "";
                 getRecipes();
@@ -254,7 +254,7 @@ getRecipes();
 
 
             let response = await fetch(`${BASE_URL}/recipes/${recipeId}`, requestOptions);
-            if(response.status === 200){
+            if(response.ok){
                 deleteRecipeNameInput.value = "";
                 getRecipes();
                 refreshRecipeList();
@@ -283,7 +283,7 @@ getRecipes();
         };
         try{
         let response = await fetch(`${BASE_URL}/recipes`, requestOptions);
-        if(response.status === 200){
+        if(response.ok){
             recipes = await response.json();
             refreshRecipeList();
         }else{
@@ -340,7 +340,7 @@ getRecipes();
 
         try {
             let response = await fetch(`${BASE_URL}/logout`,requestOptions);
-            if(response.status === 200){
+            if(response.ok){
                 sessionStorage.removeItem("auth-token", null);
                 sessionStorage.removeItem("is-admin", null);
                 window.location.href = "../login/login-page.html";
