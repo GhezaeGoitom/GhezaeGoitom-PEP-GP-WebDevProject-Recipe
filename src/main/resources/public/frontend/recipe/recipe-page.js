@@ -144,7 +144,7 @@ getRecipes();
                 await getRecipes();
             } else{
                 let errorText = await response.text();
-    alert("Add failed. Status: " + response.status + " Response: " + errorText + "check staus:" + sessionStorage.getItem("auth-token") + " extra: "+sessionStorage.getItem("is-admin"));
+    alert("hh: " + response.status + " Response: " + errorText + " extra: "+sessionStorage.getItem("is-admin"));
             }
             
         } catch (error) {

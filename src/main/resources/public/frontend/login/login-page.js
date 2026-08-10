@@ -88,6 +88,7 @@ let response = await fetch(`${BASE_URL}/login`,requestOptions);
 
         if(response.status === 200){
             let responseText = await response.text();
+            alert("token: "+responseText);
             sessionStorage.setItem("auth-token", responseText[0]);
             sessionStorage.setItem("is-admin", responseText[1]);
         
