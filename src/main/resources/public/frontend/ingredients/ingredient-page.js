@@ -113,12 +113,8 @@ try {
         ingredients = await response.json();
         refreshIngredientList();
     }else{
-        // alert("error in fetching ingredients");  
-        alert(
-            "DELETE status: " + response.status +
-            " ID: " + id +
-            " Name: " + deleteName
-        );  
+        alert("error in fetching ingredients");  
+         
     }
     
 } catch (error) {
