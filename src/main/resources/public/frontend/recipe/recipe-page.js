@@ -143,9 +143,8 @@ getRecipes();
                 addRecipeInstructionsInput.value = "";
                 await getRecipes();
             } else{
-                let errorText = await response.text();
-    alert("hh: " + response.status + " Response: " + errorText + " extra: "+sessionStorage.getItem("is-admin"));
-            }
+                alert("error adding recipe!");
+             }
             
         } catch (error) {
             console.error(error);
