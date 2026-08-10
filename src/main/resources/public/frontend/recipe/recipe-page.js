@@ -139,7 +139,9 @@ getRecipes();
                 addRecipeNameInput.value = "";
                 addRecipeInstructionsInput.value = "";
                 refreshRecipeList();    
-            } 
+            } else{
+                alert("error adding recipe!");
+            }
             
         } catch (error) {
             console.error(error);
@@ -204,6 +206,8 @@ getRecipes();
                 updateRecipeInstructionsInput.value = "";
                 getRecipes();
                 refreshRecipeList();
+            }else{
+                alert("there is an error updating recipe");    
             }
 
             
@@ -258,6 +262,8 @@ getRecipes();
                 deleteRecipeNameInput.value = "";
                 getRecipes();
                 refreshRecipeList();
+            }else{
+                alert("There is an error deleting recipe");
             }
 
             
@@ -341,10 +347,12 @@ getRecipes();
         try {
             let response = await fetch(`${BASE_URL}/logout`,requestOptions);
             if(response.ok){
-                sessionStorage.removeItem("auth-token", null);
-                sessionStorage.removeItem("is-admin", null);
+                sessionStorage.removeItem("auth-token");
+                sessionStorage.removeItem("is-admin");
                 window.location.href = "../login/login-page.html";
-            } 
+            } else{
+                alert("Error in logout");
+            }
             
         } catch (error) {
             console.error(error);
