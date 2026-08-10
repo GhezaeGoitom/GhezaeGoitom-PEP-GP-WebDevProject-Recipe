@@ -80,7 +80,10 @@ getRecipes();
               }
         };
         try{
-        let response = await fetch(`${BASE_URL}/recipes${encodeURIComponent(input)}`, requestOptions);
+            let response = await fetch(
+                `${BASE_URL}/recipes?name=${encodeURIComponent(input)}`,
+                requestOptions
+            );
         if(response.ok){
             recipes = await response.json();
             refreshRecipeList();
@@ -138,9 +141,10 @@ getRecipes();
             if(response.ok){
                 addRecipeNameInput.value = "";
                 addRecipeInstructionsInput.value = "";
-                refreshRecipeList();    
+                await getRecipes();
             } else{
-                alert("error adding recipe!");
+                let errorText = await response.text();
+    alert("Add failed. Status: " + response.status + " Response: " + errorText + "check staus:" + sessionStorage.getItem("auth-token") + " extra: "+sessionStorage.getItem("is-admin"));
             }
             
         } catch (error) {
